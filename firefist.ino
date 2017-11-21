@@ -22,11 +22,6 @@
 
 ///////////////////////////////////////////////////////
 //////////////////////// PUNCH DEFINES
-/*#define POSTHRESH 1.0
-#define NEGTHRESH -1.0
-#define MILLISMAXTENDPOSSTARTNEG 100
-#define MINVXPOS 3.0
-#define MAXVXNEG -2.0*/
 
 #define A_THRESHPOS 10.0
 #define A_MAXNEG    -10.0
@@ -49,19 +44,6 @@ MPU6050 mpu;
 #define VALVE_PIN   17
 
 bool blinkState = false;
-/*
-unsigned long millisBefore = 0;
-unsigned long millisNow = 0;
-unsigned long millisTStartPos;
-unsigned long millisTEndPos;
-unsigned long millisTStartNeg;
-unsigned long millisTEndNeg;
-bool integratePosHalf = false;
-bool integrationWasPos = false;
-bool integrateNegHalf = false;
-bool integrate = true;
-*/
-
 
 float aaXBefore;
 float aaRealXNorm;
@@ -328,125 +310,17 @@ void loop() {
           }
         }
 
-/*
-        //integrator
-        integrate = integratePosHalf | integrateNegHalf;
-        if(integrate){
-          dt =(float)( millisNow - millisBefore); //dt[ms]
-          vx += aaRealXNorm * dt / 1000.0;  
-        }
- 
-        if(!integrationWasPos) {
-          if(!integratePosHalf) {
-            if(aaRealXNorm >= POSTHRESH) {
-              vx = 0.0;
-              integratePosHalf = true;
-              millisTStartPos = millisNow;
-            }
-          } else {
-            if(aaRealXNorm <= POSTHRESH) {
-              integratePosHalf = false;
-              integrationWasPos = true;
-              vxPos = vx;
-              millisTEndPos = millisNow;
-              #ifdef DEBUGOUT
-              Serial.print("#pos wave detected: vxpos = ");
-              Serial.println(vxPos);
-              #endif
-            }
-          }
-        } else {
-          if(!integrateNegHalf) {
-            if(aaRealXNorm <= NEGTHRESH) {
-              vx = 0.0;
-              integrateNegHalf = true;
-              millisTStartNeg = millisNow;
-            }
-          } else {
-            if(aaRealXNorm >= NEGTHRESH) {
-              integrateNegHalf = false;
-              integrationWasPos = false;
-              vxNeg = vx;
-              millisTEndNeg = millisNow;
-
-              #ifdef DEBUGOUT
-              Serial.print("#neg wave detected: vxneg = ");
-              Serial.println(vxNeg);
-              #endif
-
-              if((vxPos >= MINVXPOS) && (vxNeg <= MAXVXNEG)) {
-                #ifdef DEBUGOUT
-                Serial.print("#PUNCH DETECTED!!!! FIRE!!!  FIRE!!! FIRE!!!=3 =3 =3 =3 =3 =3 =3 =3 =3\n");              
-                #endif
-                fire();
-              }
-            }
-          }
-        }
-
-        //reset if only a positive wave is detected
-        if((millisTStartNeg <= millisTEndPos) && integrationWasPos && (millisNow > ( millisTEndPos + MILLISMAXTENDPOSSTARTNEG))) {
-          integrationWasPos = false;
-        }
-        
-        millisBefore = millisNow;
-        
         #ifdef DATAOUT
-        //to fix boundaries
-        Serial.print(20);
-        Serial.print(" ");
-        Serial.print(-20);
-        Serial.print(" ");
-
-        //and to hava a scale
-        Serial.print(2);
-        Serial.print(" ");
-        Serial.print(-2);
-        Serial.print(" ");
-        Serial.print(4);
-        Serial.print(" ");
-        Serial.print(-4);
-        Serial.print(" ");
-        Serial.print(6);
-        Serial.print(" ");
-        Serial.print(-6);
-        Serial.print(" ");
-        Serial.print(8);
-        Serial.print(" ");
-        Serial.print(-8);
-        Serial.print(" ");
-
-        //to measure runtime of the program
-        Serial.print(dt);
-        Serial.print(" ");
-
-        //integration flags
-        Serial.print(integratePosHalf ? -10 : -15);
-        Serial.print(" ");
-        Serial.print(integrateNegHalf ? -10 : -15);
-        Serial.print(" ");
-        Serial.print(integrationWasPos ? -10 : -15);
-        Serial.print(" ");
-        //Serial.print("areal\t");
         //Serial.print(millisNow);
-        //Serial.print(" ");
-        //Serial.print(aaReal.x * 9.81 / 8192);
-        // Serial.print(" ");
-        // Serial.print(aaReal.y * 9.81 / 8192);
-        // Serial.print(" ");
-        // Serial.print(aaReal.z * 9.81 / 8192);
-        //Serial.print(dt);
-        //Serial.print(" ");
-        Serial.print(aaRealXNorm); //[m/s/s]
         Serial.print(" ");
-        Serial.print(vx); //[m/s]
+        Serial.print(aaReal.x * 9.81 / 8192);
         Serial.print(" ");
-        Serial.print(vxPos);
+        Serial.print(aaReal.y * 9.81 / 8192);
         Serial.print(" ");
-        Serial.print(vxNeg);
+        Serial.print(aaReal.z * 9.81 / 8192);
         Serial.print("\n");
         #endif //DATAOUT
-*/        
+ 
         
         
         
